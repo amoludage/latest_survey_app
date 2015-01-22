@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150122034809) do
+ActiveRecord::Schema.define(version: 20150122061351) do
 
   create_table "options", force: :cascade do |t|
     t.string   "description",  null: false
@@ -31,10 +31,15 @@ ActiveRecord::Schema.define(version: 20150122034809) do
 
   add_index "questions", ["survey_id"], name: "index_questions_on_survey_id"
 
-  create_table "remove_duplicate_role_from_users", force: :cascade do |t|
+  create_table "responses", force: :cascade do |t|
+    t.integer  "options_id", null: false
+    t.integer  "users_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "responses", ["options_id"], name: "index_responses_on_options_id"
+  add_index "responses", ["users_id"], name: "index_responses_on_users_id"
 
   create_table "roles", force: :cascade do |t|
     t.string   "name",       null: false
@@ -49,16 +54,6 @@ ActiveRecord::Schema.define(version: 20150122034809) do
     t.integer  "count_people"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.string   "email",      null: false
-    t.integer  "age"
-    t.string   "gender"
-    t.string   "password",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
 end
