@@ -1,0 +1,13 @@
+=flash[:notice]
+%table
+  %tr
+    %th Question
+    - @question.each do |q|
+      %tr
+        %td= q.description
+        %td= link_to "Edit Question", edit_survey_question_path(@survey, q)
+        %td= link_to "Destroy question", survey_question_path(@survey, q), method: 'delete', data: {confirm: 'Are you sure?'}
+  %br
+%br
+= link_to "Create New Question", new_survey_question_path(@survey)
+= link_to "Survey Home", root_path

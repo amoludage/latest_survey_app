@@ -3,8 +3,23 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
-
+  root 'surveys#index'
+  resources :surveys do#do  #rails restful routing
+    resources :questions
+  end
+  resources :questions do
+    resources :options
+  end
+=begin
+    resources :questions
+    member do #specific route
+      get 'details'
+    end
+    collection do #generic route ke liye...not need to id
+     post 'summery', as: 'survey_summary'
+    end
+  end
+=end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

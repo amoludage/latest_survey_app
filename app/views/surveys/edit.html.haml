@@ -1,0 +1,7 @@
+%h2
+  Edit the form
+=flash[:error]
+= render 'form'
+
+=link_to "Home", root_path
+=#link_to 'Edit Question', edit_survey_question_path(@survey)

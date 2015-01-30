@@ -1,8 +1,8 @@
 class CreateOptions < ActiveRecord::Migration
   def change
     create_table :options do |t|
-      t.string :description, null: false
-      t.references :question, index: true, null: false
+      t.string :description
+      t.references :question, index: true
       t.timestamps null: false
     end
   end

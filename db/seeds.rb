@@ -14,6 +14,5 @@ Role.first.users.create(name: "Atul", email: "abh@xyz.com", age: nil, gender: ni
 Survey.create(name: "Code Retreat", conducted_on: "2014-10-12")
 
 Survey.first.questions.create(description: "How was the event")
-Question.first.options.create(description: "Good")
 Question.first.options.create(description: "Bad")
-
+Question.first.options.create(description: "Good")

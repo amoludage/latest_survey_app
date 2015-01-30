@@ -1,0 +1,17 @@
+%h2
+  Welcome to survey application
+%p
+  =flash[:notice]
+%table
+  %tr
+    %th Survey names
+    - @survey.each do |s|
+      %tr
+        %td= s.name
+        %td= link_to 'Show', survey_path(s.id)
+        %td= link_to "Edit", edit_survey_path(s.id)
+        %td= link_to "Delete", survey_path(s.id), method: 'delete', data: {confirm: "Are you sure?"}
+  %br
+
+%br
+=link_to "Create new Survey", new_survey_path

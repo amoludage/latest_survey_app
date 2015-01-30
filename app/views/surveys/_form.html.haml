@@ -1,0 +1,17 @@
+%p
+  Survey details
+= form_for(@survey) do |survey|
+  = survey.label :name
+  = survey.text_field :name
+  %br
+  = survey.label :survey_type
+  = survey.select :survey_type, Survey::TYPES, include_blank: true
+  %br
+  = survey.label :conducted_Date
+  = survey.date_select :conducted_on
+  %br
+  = survey.label :count_people
+  = survey.text_field :count_people
+  %br
+  .actions
+    = survey.submit

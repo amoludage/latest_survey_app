@@ -1,6 +1,6 @@
-class CreateRoles < ActiveRecord::Migration
+class CreateHusbands < ActiveRecord::Migration
   def change
-    create_table :roles do |t|
+    create_table :husbands do |t|
       t.string :name
       t.timestamps null: false
     end
