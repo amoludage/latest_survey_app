@@ -1,0 +1,1534 @@
+diff --git a/.rspec b/.rspec
+new file mode 100644
+index 0000000..83e16f8
+--- /dev/null
++++ b/.rspec
+@@ -0,0 +1,2 @@
++--color
++--require spec_helper
+diff --git a/Gemfile b/Gemfile
+index b43fd2f..11ca1c9 100644
+--- a/Gemfile
++++ b/Gemfile
+@@ -23,6 +23,7 @@ gem 'jbuilder', '~> 2.0'
+ # bundle exec rake doc:rails generates the API under doc/api.
+ gem 'sdoc', '~> 0.4.0', group: :doc
+ 
++gem 'haml-rails'
+ # Use ActiveModel has_secure_password
+ # gem 'bcrypt', '~> 3.1.7'
+ 
+@@ -41,5 +42,6 @@ group :development, :test do
+ 
+   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+   gem 'spring'
++  gem 'rspec-rails'
++  gem 'factory_girl_rails'
+ end
+-
+diff --git a/Gemfile.lock b/Gemfile.lock
+index 6116ed0..c61b512 100644
+--- a/Gemfile.lock
++++ b/Gemfile.lock
+@@ -54,11 +54,30 @@ GEM
+     columnize (0.9.0)
+     debug_inspector (0.0.2)
+     debugger-linecache (1.2.0)
++    diff-lcs (1.2.5)
+     erubis (2.7.0)
+     execjs (2.2.2)
++    factory_girl (4.5.0)
++      activesupport (>= 3.0.0)
++    factory_girl_rails (4.5.0)
++      factory_girl (~> 4.5.0)
++      railties (>= 3.0.0)
+     globalid (0.3.0)
+       activesupport (>= 4.1.0)
++    haml (4.0.6)
++      tilt
++    haml-rails (0.8.2)
++      actionpack (>= 4.0.1)
++      activesupport (>= 4.0.1)
++      haml (>= 3.1, < 5.0)
++      html2haml (>= 1.0.1)
++      railties (>= 4.0.1)
+     hike (1.2.3)
++    html2haml (2.0.0)
++      erubis (~> 2.7.0)
++      haml (~> 4.0.0)
++      nokogiri (~> 1.6.0)
++      ruby_parser (~> 3.5)
+     i18n (0.7.0)
+     jbuilder (2.2.6)
+       activesupport (>= 3.0.0, < 5)
+@@ -107,6 +126,24 @@ GEM
+       thor (>= 0.18.1, < 2.0)
+     rake (10.4.2)
+     rdoc (4.2.0)
++    rspec-core (3.1.7)
++      rspec-support (~> 3.1.0)
++    rspec-expectations (3.1.2)
++      diff-lcs (>= 1.2.0, < 2.0)
++      rspec-support (~> 3.1.0)
++    rspec-mocks (3.1.3)
++      rspec-support (~> 3.1.0)
++    rspec-rails (3.1.0)
++      actionpack (>= 3.0)
++      activesupport (>= 3.0)
++      railties (>= 3.0)
++      rspec-core (~> 3.1.0)
++      rspec-expectations (~> 3.1.0)
++      rspec-mocks (~> 3.1.0)
++      rspec-support (~> 3.1.0)
++    rspec-support (3.1.2)
++    ruby_parser (3.6.4)
++      sexp_processor (~> 4.1)
+     sass (3.4.10)
+     sass-rails (5.0.1)
+       railties (>= 4.0.0, < 5.0)
+@@ -117,6 +154,7 @@ GEM
+     sdoc (0.4.1)
+       json (~> 1.7, >= 1.7.7)
+       rdoc (~> 4.0)
++    sexp_processor (4.4.5)
+     slop (3.6.0)
+     spring (1.2.0)
+     sprockets (2.12.3)
+@@ -151,9 +189,12 @@ PLATFORMS
+ DEPENDENCIES
+   byebug
+   coffee-rails (~> 4.1.0)
++  factory_girl_rails
++  haml-rails
+   jbuilder (~> 2.0)
+   jquery-rails
+   rails (= 4.2.0)
++  rspec-rails
+   sass-rails (~> 5.0)
+   sdoc (~> 0.4.0)
+   spring
+diff --git a/app/assets/javascripts/questions.coffee b/app/assets/javascripts/questions.coffee
+new file mode 100644
+index 0000000..24f83d1
+--- /dev/null
++++ b/app/assets/javascripts/questions.coffee
+@@ -0,0 +1,3 @@
++# Place all the behaviors and hooks related to the matching controller here.
++# All this logic will automatically be available in application.js.
++# You can use CoffeeScript in this file: http://coffeescript.org/
+diff --git a/app/assets/javascripts/surveys.coffee b/app/assets/javascripts/surveys.coffee
+new file mode 100644
+index 0000000..24f83d1
+--- /dev/null
++++ b/app/assets/javascripts/surveys.coffee
+@@ -0,0 +1,3 @@
++# Place all the behaviors and hooks related to the matching controller here.
++# All this logic will automatically be available in application.js.
++# You can use CoffeeScript in this file: http://coffeescript.org/
+diff --git a/app/assets/stylesheets/questions.scss b/app/assets/stylesheets/questions.scss
+new file mode 100644
+index 0000000..d33ba88
+--- /dev/null
++++ b/app/assets/stylesheets/questions.scss
+@@ -0,0 +1,3 @@
++// Place all the styles related to the questions controller here.
++// They will automatically be included in application.css.
++// You can use Sass (SCSS) here: http://sass-lang.com/
+diff --git a/app/assets/stylesheets/surveys.scss b/app/assets/stylesheets/surveys.scss
+new file mode 100644
+index 0000000..9570e08
+--- /dev/null
++++ b/app/assets/stylesheets/surveys.scss
+@@ -0,0 +1,3 @@
++// Place all the styles related to the Surveys controller here.
++// They will automatically be included in application.css.
++// You can use Sass (SCSS) here: http://sass-lang.com/
+diff --git a/app/controllers/.questions_controller.rb.swp b/app/controllers/.questions_controller.rb.swp
+new file mode 100644
+index 0000000..ba90466
+Binary files /dev/null and b/app/controllers/.questions_controller.rb.swp differ
+diff --git a/app/controllers/.surveys_controller.rb.swp b/app/controllers/.surveys_controller.rb.swp
+new file mode 100644
+index 0000000..e4cdc24
+Binary files /dev/null and b/app/controllers/.surveys_controller.rb.swp differ
+diff --git a/app/controllers/questions_controller.rb b/app/controllers/questions_controller.rb
+new file mode 100644
+index 0000000..c6d153b
+--- /dev/null
++++ b/app/controllers/questions_controller.rb
+@@ -0,0 +1,60 @@
++class QuestionsController < ApplicationController
++  def index
++    @survey = Survey.find(params[:survey_id])
++    @question = @survey.questions
++  end
++
++  def show
++    @survey = Survey.find(params[:survey_id])
++    @question = @survey.questions
++  end
++
++  def new
++    @survey  = Survey.find(params[:survey_id])
++    @question = @survey.questions.build
++    4.times do
++      @question.options.build
++    end
++  end
++
++  def create
++    @survey  = Survey.find(params[:survey_id])
++    @question = @survey.questions.new(question_params)
++    if @question.save
++      flash[:notice] = 'question created successfully'
++      redirect_to survey_questions_path(@survey)
++    else
++      flash[:error] = 'something went wrong'
++      render 'new'
++    end
++  end
++
++  def edit
++    @survey = Survey.find(params[:survey_id])
++    @question = @survey.questions.find(params[:id])
++  end
++
++  def update
++    @survey  = Survey.find(params[:survey_id])
++    @question = @survey.questions.find(params[:id])
++    if @question.update_attributes(question_params)
++      flash[:notice] = 'Question update successfully'
++      redirect_to survey_questions_path(@survey)
++    else
++      flash[:error] = 'something is wrong'
++      render 'edit'
++    end
++  end
++
++  def destroy
++    @survey = Survey.find(params[:survey_id])
++    @question = @survey.questions.find(params[:id])
++    @question.destroy
++    redirect_to survey_questions_path(@survey)
++  end
++
++  private
++  def question_params
++    params.require(:question).permit(:description, options_attributes: [:id, :description])
++  end
++end
+diff --git a/app/controllers/surveys_controller.rb b/app/controllers/surveys_controller.rb
+new file mode 100644
+index 0000000..ae5a53e
+--- /dev/null
++++ b/app/controllers/surveys_controller.rb
+@@ -0,0 +1,55 @@
++class SurveysController < ApplicationController
++  def index
++    @survey = Survey.all
++  end
++
++  def create
++    @survey = Survey.new(survey_params)
++    if @survey.save
++      flash[:notice] = "survey successfully saved"
++      redirect_to root_path
++    else
++      flash[:error] = 'something went wrong in form: please fill all detail'
++      render 'new'
++    end
++  end
++
++  def edit
++    @survey = Survey.find(params[:id])
++  end
++
++  def new
++    @survey = Survey.new
++    #4.times do
++     # @survey.questions.build
++    #end
++  end
++
++  def show
++    @survey = Survey.find(params[:id])
++    #q = @survey.questions.build
++  end
++
++  def update
++    @survey = Survey.find(params[:id])
++    if @survey.update_attributes(survey_params)
++      flash[:notice] = 'survey updated successfully'
++      redirect_to root_path
++    else
++      flash[:error] = 'Something wrong: please insert all detail properly'
++      render 'edit'
++    end
++  end
++
++  def destroy
++    @survey = Survey.find(params[:id])
++    @survey.destroy
++    flash[:notice] = 'Survey deleted'
++    redirect_to surveys_path
++  end
++
++  private
++  def survey_params
++    params.require(:survey).permit(:name, :survey_type, :conducted_on, :count_people)# questions_attributes: [:description])
++  end
++end
+diff --git a/app/helpers/questions_helper.rb b/app/helpers/questions_helper.rb
+new file mode 100644
+index 0000000..2eaab4a
+--- /dev/null
++++ b/app/helpers/questions_helper.rb
+@@ -0,0 +1,2 @@
++module QuestionsHelper
++end
+diff --git a/app/helpers/surveys_helper.rb b/app/helpers/surveys_helper.rb
+new file mode 100644
+index 0000000..84524bb
+--- /dev/null
++++ b/app/helpers/surveys_helper.rb
+@@ -0,0 +1,2 @@
++module SurveysHelper
++end
+diff --git a/app/models/.user.rb.swp b/app/models/.user.rb.swp
+new file mode 100644
+index 0000000..38a6251
+Binary files /dev/null and b/app/models/.user.rb.swp differ
+diff --git a/app/models/husband.rb b/app/models/husband.rb
+new file mode 100644
+index 0000000..f171b3a
+--- /dev/null
++++ b/app/models/husband.rb
+@@ -0,0 +1,3 @@
++class Husband < ActiveRecord::Base
++  has_one :wife
++end
+diff --git a/app/models/option.rb b/app/models/option.rb
+index f33e6b9..a088eaf 100644
+--- a/app/models/option.rb
++++ b/app/models/option.rb
+@@ -3,4 +3,8 @@ class Option < ActiveRecord::Base
+   has_many :responses
+   has_many :users, through: :responses
+ 
++  #validates_presence_of :question_id
++  validates_length_of :description, :in => 2..20
++  #validates :question_id, presence: true
++  #validates :description, length: {minimum: 2, maximum: 20}
+ end
+diff --git a/app/models/question.rb b/app/models/question.rb
+index 2ac933e..90f8cbf 100644
+--- a/app/models/question.rb
++++ b/app/models/question.rb
+@@ -2,5 +2,23 @@ class Question < ActiveRecord::Base
+ 
+   has_many :options
+   belongs_to :survey
++  accepts_nested_attributes_for :options
++  validates_length_of :description, :in => 5..100
++  #validates :description, length: {minimum: 5, maximum: 100}
++  # validates_presence_of :survey_id
++  # validates :survey_id, presence: true
++  #before_save :put, if: :survey_id
++  after_create :update_question_count, if: :survey_id
++  accepts_nested_attributes_for :options
+ 
++  def update_question_count
++    puts "In update question"
++    qcount = self.survey.questions.count
++    puts qcount
++    self.survey.update_attribute(:question_count, qcount)
++  end
++
++  #def put
++   # puts 'before save'
++  #end
+ end
+diff --git a/app/models/response.rb b/app/models/response.rb
+index ad38d10..5c7ef0e 100644
+--- a/app/models/response.rb
++++ b/app/models/response.rb
+@@ -3,4 +3,6 @@ class Response < ActiveRecord::Base
+   belongs_to :user
+   belongs_to :option
+ 
++  validates_uniqueness_of :user, :scope => :option
++ # validates :user, uniqueness: { scope: :option }
+ end
+diff --git a/app/models/role.rb b/app/models/role.rb
+index 410f6db..6ff9259 100644
+--- a/app/models/role.rb
++++ b/app/models/role.rb
+@@ -1,5 +1,6 @@
+ class Role < ActiveRecord::Base
+ 
+   has_many :users
+-
++  validates_inclusion_of :name, :in => %w(admin user), :message => "name is not valid"
++  #validates :name, inclusion: {in: %w(admin user), message: "Invalid role"}
+ end
+diff --git a/app/models/survey.rb b/app/models/survey.rb
+index 0bdd96f..cf18468 100644
+--- a/app/models/survey.rb
++++ b/app/models/survey.rb
+@@ -1,5 +1,15 @@
+ class Survey < ActiveRecord::Base
+ 
+   has_many :questions
++  TYPES = ['General', 'Educational']
++  #validates :name, length: {minimum: 4, maximum: 15}
++  validates_length_of :name, :in => 4..15
++  validates_length_of :survey_type, :in => 4..15
++  validates_numericality_of :count_people, :allow_nil => true, :only_integer => true
+ 
++  #validates :count_people, numericality: {only_integer: true}
++  #validates_inclusion_of :conducted_on, :in => Date.civil(2013, 01, 01)..Date.today
++  validates_inclusion_of :conducted_on , :in =>  Date.civil(2000-01-01)..Date.today, message: "%{value} is not valid date"
++  #accepts_nested_attributes_for :questions
+ end
++
+diff --git a/app/models/user.rb b/app/models/user.rb
+index 9d6ad75..a19ddae 100644
+--- a/app/models/user.rb
++++ b/app/models/user.rb
+@@ -1,7 +1,44 @@
+ class User < ActiveRecord::Base
++
+   belongs_to :role
+ 
+   has_many :responses
+   has_many :options, through: :responses
+ 
++  validates_length_of :name, :in => 6..15
++  validates_format_of :name, :with => /\w+/ , :message => "only contain characters"
++
++  #validates_presence_of :gender  # not null
++  validates_inclusion_of :gender, in: %w(M F), :allow_nil => true, message: "%{value} is not valid gender"
++
++  #validates_presence_of :age
++  #validates :age, length: { minimum: 2}
++  #validates :age, numericality: {only_integer: true}
++  validates_numericality_of :age, :allow_nil => true, :greater_than => 15, :less_than_or_equal_to => 90, :only_integer => true
++
++
++  #validates :email, length: {minimum: 5, maximum: 30}
++  validates_length_of :email, :in => 8..25
++  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/, :message => " invalid email"
++
++  #validates :password, length: {minimum: 8, maximum: 15}
++  validates_length_of :password, :in => 8..20
++  #validates :role_id, presence: true
++
++  before_save :change_name
++  def change_name
++    puts 'user name in downcase'
++    self.name = name.downcase.titleize
++  end
++
++  before_save do
++    puts 'email'
++    self.email = email.downcase
++  end
++=begin
++  def sample(input)
++    return true if input.between?(1,9)
++    return false
++  end
++=end
+ end
+diff --git a/app/models/wife.rb b/app/models/wife.rb
+new file mode 100644
+index 0000000..2ac96b3
+--- /dev/null
++++ b/app/models/wife.rb
+@@ -0,0 +1,3 @@
++class Wife < ActiveRecord::Base
++#  belongs_to :husband
++end
+diff --git a/app/views/questions/.index.html.haml.swp b/app/views/questions/.index.html.haml.swp
+new file mode 100644
+index 0000000..65f8f37
+Binary files /dev/null and b/app/views/questions/.index.html.haml.swp differ
+diff --git a/app/views/questions/_form.html.haml b/app/views/questions/_form.html.haml
+new file mode 100644
+index 0000000..97b38ee
+--- /dev/null
++++ b/app/views/questions/_form.html.haml
+@@ -0,0 +1,15 @@
++%p
++  Questions
++
++= form_for [@survey ,@question] do |q|
++  = q.label :Question_description
++  = q.text_field :description
++  %br
++  Options
++  %br
++  = q.fields_for :options do |opt|
++    = opt.label :Option_description
++    = opt.text_field :description
++    %br
++  .actions
++    = q.submit
+diff --git a/app/views/questions/edit.html.haml b/app/views/questions/edit.html.haml
+new file mode 100644
+index 0000000..0d92bbe
+--- /dev/null
++++ b/app/views/questions/edit.html.haml
+@@ -0,0 +1,4 @@
++%h2
++  Edit the questions
++= render 'form'
++= link_to 'Home', survey_questions_path(@survey)
+diff --git a/app/views/questions/index.html.haml b/app/views/questions/index.html.haml
+new file mode 100644
+index 0000000..1208a3c
+--- /dev/null
++++ b/app/views/questions/index.html.haml
+@@ -0,0 +1,13 @@
++=flash[:notice]
++%table
++  %tr
++    %th Question
++    - @question.each do |q|
++      %tr
++        %td= q.description
++        %td= link_to "Edit Question", edit_survey_question_path(@survey, q)
++        %td= link_to "Destroy question", survey_question_path(@survey, q), method: 'delete', data: {confirm: 'Are you sure?'}
++  %br
++%br
++= link_to "Create New Question", new_survey_question_path(@survey)
++= link_to "Survey Home", root_path
+diff --git a/app/views/questions/new.html.haml b/app/views/questions/new.html.haml
+new file mode 100644
+index 0000000..e4a12f5
+--- /dev/null
++++ b/app/views/questions/new.html.haml
+@@ -0,0 +1,5 @@
++%h2
++  New question..
++
++= render 'form'
++= link_to 'Home', survey_questions_path(@survey)
+diff --git a/app/views/questions/show.html.haml b/app/views/questions/show.html.haml
+new file mode 100644
+index 0000000..06c4862
+--- /dev/null
++++ b/app/views/questions/show.html.haml
+@@ -0,0 +1,5 @@
++%h2
++  Show questions
++
++= link_to 'Question Index', survey_questions_path(@survey)
++= link_to 'Survey Home', root_path
+diff --git a/app/views/surveys/._form.html.haml.swp b/app/views/surveys/._form.html.haml.swp
+new file mode 100644
+index 0000000..b434022
+Binary files /dev/null and b/app/views/surveys/._form.html.haml.swp differ
+diff --git a/app/views/surveys/_form.html.haml b/app/views/surveys/_form.html.haml
+new file mode 100644
+index 0000000..c1339ac
+--- /dev/null
++++ b/app/views/surveys/_form.html.haml
+@@ -0,0 +1,17 @@
++%p
++  Survey details
++= form_for(@survey) do |survey|
++  = survey.label :name
++  = survey.text_field :name
++  %br
++  = survey.label :survey_type
++  = survey.select :survey_type, Survey::TYPES, include_blank: true
++  %br
++  = survey.label :conducted_Date
++  = survey.date_select :conducted_on
++  %br
++  = survey.label :count_people
++  = survey.text_field :count_people
++  %br
++  .actions
++    = survey.submit
+diff --git a/app/views/surveys/edit.html.haml b/app/views/surveys/edit.html.haml
+new file mode 100644
+index 0000000..927a5a1
+--- /dev/null
++++ b/app/views/surveys/edit.html.haml
+@@ -0,0 +1,7 @@
++%h2
++  Edit the form
++=flash[:error]
++= render 'form'
++
++=link_to "Home", root_path
++=#link_to 'Edit Question', edit_survey_question_path(@survey)
+diff --git a/app/views/surveys/index.html.haml b/app/views/surveys/index.html.haml
+new file mode 100644
+index 0000000..7ee1285
+--- /dev/null
++++ b/app/views/surveys/index.html.haml
+@@ -0,0 +1,17 @@
++%h2
++  Welcome to survey application
++%p
++  =flash[:notice]
++%table
++  %tr
++    %th Survey names
++    - @survey.each do |s|
++      %tr
++        %td= s.name
++        %td= link_to 'Show', survey_path(s.id)
++        %td= link_to "Edit", edit_survey_path(s.id)
++        %td= link_to "Delete", survey_path(s.id), method: 'delete', data: {confirm: "Are you sure?"}
++  %br
++
++%br
++=link_to "Create new Survey", new_survey_path
+diff --git a/app/views/surveys/new.html.haml b/app/views/surveys/new.html.haml
+new file mode 100644
+index 0000000..bdac9e1
+--- /dev/null
++++ b/app/views/surveys/new.html.haml
+@@ -0,0 +1,3 @@
++= flash[:error]
++= render "form"
++= link_to 'Home', root_path
+diff --git a/app/views/surveys/show.html.haml b/app/views/surveys/show.html.haml
+new file mode 100644
+index 0000000..1c78274
+--- /dev/null
++++ b/app/views/surveys/show.html.haml
+@@ -0,0 +1,19 @@
++%h1
++  Survey details
++
++%h3
++  survey name--
++  = @survey.name
++  %h3
++    Survey type--
++    = @survey.survey_type
++  %h3
++    conducted on date--
++    = @survey.conducted_on
++  %h3
++    count no of people--
++    = @survey.count_people
++
++=link_to "Home", root_path
++=link_to "Edit", edit_survey_path
++=link_to "Questions", survey_questions_path(@survey.id)
+diff --git a/config/routes.rb b/config/routes.rb
+index 3f66539..389e6b2 100644
+--- a/config/routes.rb
++++ b/config/routes.rb
+@@ -3,8 +3,23 @@ Rails.application.routes.draw do
+   # See how all your routes lay out with "rake routes".
+ 
+   # You can have the root of your site routed with "root"
+-  # root 'welcome#index'
+-
++  root 'surveys#index'
++  resources :surveys do#do  #rails restful routing
++    resources :questions
++  end
++  resources :questions do
++    resources :options
++  end
++=begin
++    resources :questions
++    member do #specific route
++      get 'details'
++    end
++    collection do #generic route ke liye...not need to id
++     post 'summery', as: 'survey_summary'
++    end
++  end
++=end
+   # Example of regular route:
+   #   get 'products/:id' => 'catalog#view'
+ 
+diff --git a/db/migrate/20150121065155_create_users.rb b/db/migrate/20150121065155_create_users.rb
+index f5f2e9c..4a51d99 100644
+--- a/db/migrate/20150121065155_create_users.rb
++++ b/db/migrate/20150121065155_create_users.rb
+@@ -1,12 +1,12 @@
+ class CreateUsers < ActiveRecord::Migration
+   def change
+     create_table :users do |t|
+-      t.string :name, null: false
+-      t.string :email, null: false
++      t.string :name
++      t.string :email
+       t.integer :age
+       t.string :gender
+-      t.string :password, null:false
+-      t.references :role, index: true, null: false
++      t.string :password
++      t.references :role, index: true
+       t.timestamps null: false
+     end
+   end
+diff --git a/db/migrate/20150121070814_create_surveys.rb b/db/migrate/20150121070814_create_surveys.rb
+index 03c96d1..886d388 100644
+--- a/db/migrate/20150121070814_create_surveys.rb
++++ b/db/migrate/20150121070814_create_surveys.rb
+@@ -1,9 +1,9 @@
+ class CreateSurveys < ActiveRecord::Migration
+   def change
+     create_table :surveys do |t|
+-      t.string :name, null: false
++      t.string :name
+       t.string :survey_type
+-      t.date :conducted_on, null: false
++      t.date :conducted_on
+       t.integer :number_of_people
+       t.timestamps null: false
+     end
+diff --git a/db/migrate/20150121105425_create_questions.rb b/db/migrate/20150121105425_create_questions.rb
+index d0bbf2b..cb7baba 100644
+--- a/db/migrate/20150121105425_create_questions.rb
++++ b/db/migrate/20150121105425_create_questions.rb
+@@ -1,8 +1,8 @@
+ class CreateQuestions < ActiveRecord::Migration
+   def change
+     create_table :questions do |t|
+-      t.string :description, null: false
+-      t.references :survey, index: true, null: false
++      t.string :description
++      t.references :survey, index: true
+       t.timestamps null: false
+     end
+   end
+diff --git a/db/migrate/20150121132622_create_roles.rb b/db/migrate/20150121132622_create_roles.rb
+index a1a3c92..77234ca 100644
+--- a/db/migrate/20150121132622_create_roles.rb
++++ b/db/migrate/20150121132622_create_roles.rb
+@@ -1,7 +1,7 @@
+ class CreateRoles < ActiveRecord::Migration
+   def change
+     create_table :roles do |t|
+-      t.string :name, null: false
++      t.string :name
+       t.timestamps null: false
+     end
+   end
+diff --git a/db/migrate/20150122033740_create_options.rb b/db/migrate/20150122033740_create_options.rb
+index e0f9840..46c614d 100644
+--- a/db/migrate/20150122033740_create_options.rb
++++ b/db/migrate/20150122033740_create_options.rb
+@@ -1,8 +1,8 @@
+ class CreateOptions < ActiveRecord::Migration
+   def change
+     create_table :options do |t|
+-      t.string :description, null: false
+-      t.references :question, index: true, null: false
++      t.string :description
++      t.references :question, index: true
+       t.timestamps null: false
+     end
+   end
+diff --git a/db/migrate/20150122035430_create_responses.rb b/db/migrate/20150122035430_create_responses.rb
+index 14e26bf..576eca3 100644
+--- a/db/migrate/20150122035430_create_responses.rb
++++ b/db/migrate/20150122035430_create_responses.rb
+@@ -1,8 +1,8 @@
+ class CreateResponses < ActiveRecord::Migration
+   def change
+     create_table :responses do |t|
+-      t.references :option, index: true, null: false
+-      t.references :user, index: true, null: false
++      t.references :option, index: true
++      t.references :user, index: true
+       t.timestamps null: false
+     end
+   end
+diff --git a/db/migrate/20150127062618_add_question_count_to_surveys.rb b/db/migrate/20150127062618_add_question_count_to_surveys.rb
+new file mode 100644
+index 0000000..0afa07e
+--- /dev/null
++++ b/db/migrate/20150127062618_add_question_count_to_surveys.rb
+@@ -0,0 +1,5 @@
++class AddQuestionCountToSurveys < ActiveRecord::Migration
++  def change
++    add_column :surveys, :question_count, :integer
++  end
++end
+diff --git a/db/migrate/20150128104231_create_wives.rb b/db/migrate/20150128104231_create_wives.rb
+new file mode 100644
+index 0000000..1085a85
+--- /dev/null
++++ b/db/migrate/20150128104231_create_wives.rb
+@@ -0,0 +1,8 @@
++class CreateWives < ActiveRecord::Migration
++  def change
++    create_table :wives do |t|
++      t.references :husband
++      t.timestamps null: false
++    end
++  end
++end
+diff --git a/db/migrate/20150128105018_create_husbands.rb b/db/migrate/20150128105018_create_husbands.rb
+new file mode 100644
+index 0000000..65dcdc5
+--- /dev/null
++++ b/db/migrate/20150128105018_create_husbands.rb
+@@ -0,0 +1,8 @@
++class CreateHusbands < ActiveRecord::Migration
++  def change
++    create_table :husbands do |t|
++      t.string :name
++      t.timestamps null: false
++    end
++  end
++end
+diff --git a/db/schema.rb b/db/schema.rb
+index 15bcb3e..d6c240d 100644
+--- a/db/schema.rb
++++ b/db/schema.rb
+@@ -11,11 +11,17 @@
+ #
+ # It's strongly recommended that you check this file into your version control system.
+ 
+-ActiveRecord::Schema.define(version: 20150122035430) do
++ActiveRecord::Schema.define(version: 20150128105018) do
++
++  create_table "husbands", force: :cascade do |t|
++    t.string   "name"
++    t.datetime "created_at", null: false
++    t.datetime "updated_at", null: false
++  end
+ 
+   create_table "options", force: :cascade do |t|
+-    t.string   "description", null: false
+-    t.integer  "question_id", null: false
++    t.string   "description"
++    t.integer  "question_id"
+     t.datetime "created_at",  null: false
+     t.datetime "updated_at",  null: false
+   end
+@@ -23,8 +29,8 @@ ActiveRecord::Schema.define(version: 20150122035430) do
+   add_index "options", ["question_id"], name: "index_options_on_question_id"
+ 
+   create_table "questions", force: :cascade do |t|
+-    t.string   "description", null: false
+-    t.integer  "survey_id",   null: false
++    t.string   "description"
++    t.integer  "survey_id"
+     t.datetime "created_at",  null: false
+     t.datetime "updated_at",  null: false
+   end
+@@ -32,8 +38,8 @@ ActiveRecord::Schema.define(version: 20150122035430) do
+   add_index "questions", ["survey_id"], name: "index_questions_on_survey_id"
+ 
+   create_table "responses", force: :cascade do |t|
+-    t.integer  "option_id",  null: false
+-    t.integer  "user_id",    null: false
++    t.integer  "option_id"
++    t.integer  "user_id"
+     t.datetime "created_at", null: false
+     t.datetime "updated_at", null: false
+   end
+@@ -42,31 +48,38 @@ ActiveRecord::Schema.define(version: 20150122035430) do
+   add_index "responses", ["user_id"], name: "index_responses_on_user_id"
+ 
+   create_table "roles", force: :cascade do |t|
+-    t.string   "name",       null: false
++    t.string   "name"
+     t.datetime "created_at", null: false
+     t.datetime "updated_at", null: false
+   end
+ 
+   create_table "surveys", force: :cascade do |t|
+-    t.string   "name",         null: false
++    t.string   "name"
+     t.string   "survey_type"
+-    t.date     "conducted_on", null: false
++    t.date     "conducted_on"
+     t.integer  "count_people"
+-    t.datetime "created_at",   null: false
+-    t.datetime "updated_at",   null: false
++    t.datetime "created_at",     null: false
++    t.datetime "updated_at",     null: false
++    t.integer  "question_count"
+   end
+ 
+   create_table "users", force: :cascade do |t|
+-    t.string   "name",       null: false
+-    t.string   "email",      null: false
++    t.string   "name"
++    t.string   "email"
+     t.integer  "age"
+     t.string   "gender"
+-    t.string   "password",   null: false
+-    t.integer  "role_id",    null: false
++    t.string   "password"
++    t.integer  "role_id"
+     t.datetime "created_at", null: false
+     t.datetime "updated_at", null: false
+   end
+ 
+   add_index "users", ["role_id"], name: "index_users_on_role_id"
+ 
++  create_table "wives", force: :cascade do |t|
++    t.integer  "husband_id"
++    t.datetime "created_at", null: false
++    t.datetime "updated_at", null: false
++  end
++
+ end
+diff --git a/db/seeds.rb b/db/seeds.rb
+index 574207d..8426537 100644
+--- a/db/seeds.rb
++++ b/db/seeds.rb
+@@ -14,6 +14,5 @@ Role.first.users.create(name: "Atul", email: "abh@xyz.com", age: nil, gender: ni
+ Survey.create(name: "Code Retreat", conducted_on: "2014-10-12")
+ 
+ Survey.first.questions.create(description: "How was the event")
+-Question.first.options.create(description: "Good")
+ Question.first.options.create(description: "Bad")
+-
++Question.first.options.create(description: "Good")
+diff --git a/lib/tasks/custom_my_rake_task.rake b/lib/tasks/custom_my_rake_task.rake
+new file mode 100644
+index 0000000..31cff84
+--- /dev/null
++++ b/lib/tasks/custom_my_rake_task.rake
+@@ -0,0 +1,16 @@
++namespace 'custom_my_rake_task'do
++
++  desc 'task is used to find names by id'
++  task :find_by_id,[:id] => :environment do |task, args|
++    user = User.find(args[:id])
++    puts user.name.split
++  end
++
++  desc 'task is used to find data by name'
++  task :find_by_name,[:name] => :environment do |task, args|
++    args.with_defaults(:name => 'rahul')
++    user = User.find_by_name(args[:name])
++    puts user.name.split
++  end
++
++end
+diff --git a/lib/tasks/dump_users_data.rake b/lib/tasks/dump_users_data.rake
+new file mode 100644
+index 0000000..e97bcb5
+--- /dev/null
++++ b/lib/tasks/dump_users_data.rake
+@@ -0,0 +1,27 @@
++desc 'dumps the users data123'
++task :dump_users_data,[:id,:name] => :environment do |task, args|
++  puts 'hi, i am inside rake task'
++  puts args
++
++  user = User.find(args[:id])
++  puts user.name.split
++  puts User.count
++  user1 = User.find_by_name(args[:name])
++  user1.name = 'amol udage'
++  user1.save
++  puts user1.name.split
++
++  user.name = 'rahul vidhate'
++  user.save
++=begin
++  user1 = User.last.name
++  name = user1.name
++  name1 = name.split(' ')
++  first_name = name[0]
++  last_name = name[1]
++  print 'first name is ',first_name
++  puts
++  print 'last name is ',last_name
++  puts
++=end
++end
+diff --git a/lib/tasks/pass_value_args.rake b/lib/tasks/pass_value_args.rake
+new file mode 100644
+index 0000000..fa912d8
+--- /dev/null
++++ b/lib/tasks/pass_value_args.rake
+@@ -0,0 +1,9 @@
++namespace :task do
++  desc 'passes the args to the rake task'
++  task :pass_value_args, [:id1] => :environment do |task, args|
++    puts 'hello'
++    args.with_defaults(:id1 => 'rahul')
++    puts args[:id1]
++    p args.extras
++  end
++end
+diff --git a/spec/controllers/questions_controller_spec.rb b/spec/controllers/questions_controller_spec.rb
+new file mode 100644
+index 0000000..789a9f0
+--- /dev/null
++++ b/spec/controllers/questions_controller_spec.rb
+@@ -0,0 +1,5 @@
++require 'rails_helper'
++
++RSpec.describe QuestionsController, :type => :controller do
++
++end
+diff --git a/spec/controllers/surveys_controller_spec.rb b/spec/controllers/surveys_controller_spec.rb
+new file mode 100644
+index 0000000..efff192
+--- /dev/null
++++ b/spec/controllers/surveys_controller_spec.rb
+@@ -0,0 +1,5 @@
++require 'rails_helper'
++
++RSpec.describe SurveysController, :type => :controller do
++
++end
+diff --git a/spec/factories/husbands.rb b/spec/factories/husbands.rb
+new file mode 100644
+index 0000000..2a0bd08
+--- /dev/null
++++ b/spec/factories/husbands.rb
+@@ -0,0 +1,6 @@
++FactoryGirl.define do
++  factory :husband do
++    name "MyString"
++  end
++
++end
+diff --git a/spec/factories/roles.rb b/spec/factories/roles.rb
+new file mode 100644
+index 0000000..c17624e
+--- /dev/null
++++ b/spec/factories/roles.rb
+@@ -0,0 +1,6 @@
++FactoryGirl.define do
++  factory :role do
++    name 'admin'
++  end
++
++end
+diff --git a/spec/factories/users.rb b/spec/factories/users.rb
+new file mode 100644
+index 0000000..5a423c6
+--- /dev/null
++++ b/spec/factories/users.rb
+@@ -0,0 +1,18 @@
++FactoryGirl.define do
++  factory :user do
++    name 'amol udage'
++    sequence(:email) {|n| "amol#{n}@gmail.com"}
++    password '1234567890'
++    age 22
++#gender 'M'
++    association :role
++#role
++=begin after(:build) do |user|
++        user.role = Role.find_by_name('admin') || FactoryGirl.create(:role)
++       end
++=end
++    trait :gender do
++      gender "M"
++    end
++  end
++end
+diff --git a/spec/factories/wives.rb b/spec/factories/wives.rb
+new file mode 100644
+index 0000000..a2c991f
+--- /dev/null
++++ b/spec/factories/wives.rb
+@@ -0,0 +1,6 @@
++FactoryGirl.define do
++  factory :wife do
++
++  end
++
++end
+diff --git a/spec/fixtures/options.yml b/spec/fixtures/options.yml
+new file mode 100644
+index 0000000..937a0c0
+--- /dev/null
++++ b/spec/fixtures/options.yml
+@@ -0,0 +1,11 @@
++# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
++
++# This model initially had no columns defined.  If you add columns to the
++# model remove the '{}' from the fixture names and add the columns immediately
++# below each fixture, per the syntax in the comments below
++#
++one: {}
++# column: value
++#
++two: {}
++#  column: value
+diff --git a/spec/fixtures/questions.yml b/spec/fixtures/questions.yml
+new file mode 100644
+index 0000000..937a0c0
+--- /dev/null
++++ b/spec/fixtures/questions.yml
+@@ -0,0 +1,11 @@
++# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
++
++# This model initially had no columns defined.  If you add columns to the
++# model remove the '{}' from the fixture names and add the columns immediately
++# below each fixture, per the syntax in the comments below
++#
++one: {}
++# column: value
++#
++two: {}
++#  column: value
+diff --git a/spec/fixtures/responses.yml b/spec/fixtures/responses.yml
+new file mode 100644
+index 0000000..937a0c0
+--- /dev/null
++++ b/spec/fixtures/responses.yml
+@@ -0,0 +1,11 @@
++# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
++
++# This model initially had no columns defined.  If you add columns to the
++# model remove the '{}' from the fixture names and add the columns immediately
++# below each fixture, per the syntax in the comments below
++#
++one: {}
++# column: value
++#
++two: {}
++#  column: value
+diff --git a/spec/fixtures/roles.yml b/spec/fixtures/roles.yml
+new file mode 100644
+index 0000000..937a0c0
+--- /dev/null
++++ b/spec/fixtures/roles.yml
+@@ -0,0 +1,11 @@
++# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
++
++# This model initially had no columns defined.  If you add columns to the
++# model remove the '{}' from the fixture names and add the columns immediately
++# below each fixture, per the syntax in the comments below
++#
++one: {}
++# column: value
++#
++two: {}
++#  column: value
+diff --git a/spec/fixtures/surveys.yml b/spec/fixtures/surveys.yml
+new file mode 100644
+index 0000000..937a0c0
+--- /dev/null
++++ b/spec/fixtures/surveys.yml
+@@ -0,0 +1,11 @@
++# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
++
++# This model initially had no columns defined.  If you add columns to the
++# model remove the '{}' from the fixture names and add the columns immediately
++# below each fixture, per the syntax in the comments below
++#
++one: {}
++# column: value
++#
++two: {}
++#  column: value
+diff --git a/spec/fixtures/users.yml b/spec/fixtures/users.yml
+new file mode 100644
+index 0000000..f49f33e
+--- /dev/null
++++ b/spec/fixtures/users.yml
+@@ -0,0 +1,19 @@
++# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
++
++# This model initially had no columns defined.  If you add columns to the
++# model remove the '{}' from the fixture names and add the columns immediately
++# below each fixture, per the syntax in the comments below
++#
++user1:
++  name: 'amol'
++  email: 'amol@gmail.com'
++  age: 22
++  gender: 'M'
++  role_id: 1
++  password: '1234567890'
++one: {}
++
++# column: value
++#
++two: {}
++#  column: value
+diff --git a/spec/helpers/questions_helper_spec.rb b/spec/helpers/questions_helper_spec.rb
+new file mode 100644
+index 0000000..961d8bf
+--- /dev/null
++++ b/spec/helpers/questions_helper_spec.rb
+@@ -0,0 +1,15 @@
++require 'rails_helper'
++
++# Specs in this file have access to a helper object that includes
++# the QuestionsHelper. For example:
++#
++# describe QuestionsHelper do
++#   describe "string concat" do
++#     it "concats two strings with spaces" do
++#       expect(helper.concat_strings("this","that")).to eq("this that")
++#     end
++#   end
++# end
++RSpec.describe QuestionsHelper, :type => :helper do
++  pending "add some examples to (or delete) #{__FILE__}"
++end
+diff --git a/spec/helpers/surveys_helper_spec.rb b/spec/helpers/surveys_helper_spec.rb
+new file mode 100644
+index 0000000..1f9cb25
+--- /dev/null
++++ b/spec/helpers/surveys_helper_spec.rb
+@@ -0,0 +1,15 @@
++require 'rails_helper'
++
++# Specs in this file have access to a helper object that includes
++# the SurveysHelper. For example:
++#
++# describe SurveysHelper do
++#   describe "string concat" do
++#     it "concats two strings with spaces" do
++#       expect(helper.concat_strings("this","that")).to eq("this that")
++#     end
++#   end
++# end
++RSpec.describe SurveysHelper, :type => :helper do
++  pending "add some examples to (or delete) #{__FILE__}"
++end
+diff --git a/spec/models/husband_spec.rb b/spec/models/husband_spec.rb
+new file mode 100644
+index 0000000..123f05d
+--- /dev/null
++++ b/spec/models/husband_spec.rb
+@@ -0,0 +1,5 @@
++require 'rails_helper'
++
++RSpec.describe Husband, :type => :model do
++  pending "add some examples to (or delete) #{__FILE__}"
++end
+diff --git a/spec/models/survey_spec.rb b/spec/models/survey_spec.rb
+new file mode 100644
+index 0000000..e39497b
+--- /dev/null
++++ b/spec/models/survey_spec.rb
+@@ -0,0 +1,6 @@
++describe 'Survey'
++  it 'has name'
++  it 'has many users as participant'
++  it 'has many questions'
++  it 'get responses for question'
++end
+diff --git a/spec/models/user_spec.rb b/spec/models/user_spec.rb
+new file mode 100644
+index 0000000..38a4564
+--- /dev/null
++++ b/spec/models/user_spec.rb
+@@ -0,0 +1,43 @@
++require 'rails_helper'
++
++RSpec.describe User, :type => :model do
++=begin
++  fixtures :users
++  before(:each)do
++  @user = users(:user1)
++end
++=end
++#let(:user){users(:user1)}
++
++  before(:each)do
++    @user = FactoryGirl.build(:user, :gender) #:name => 'Rails')
++    #@user1 = FactoryGirl.build_list(:user, 20)
++  end
++
++
++  it 'has role'
++  it 'validate role'
++
++  it 'has name'do
++    puts @user.inspect
++    #puts @user1.inspect
++  end
++
++  it 'validate name'do
++    User.new(:name => '').should_not be_valid
++  end
++
++  it 'name must be string'
++  it 'has email'
++  it 'has password'
++  it 'has valid email and password'
++  it 'has invalid email/password then re-enter'
++  it 'is participated in survey '
++  it 'has number of questions'
++  it 'has to be fill all details about himself'
++  it 'has one option for one question'
++  it 'has to be covered all the questions'
++  it 'has to be complete the survey process'
++  it 'has to submit survey application response'
++  it 'get the feedback from admin'
++end
+diff --git a/spec/models/wife_spec.rb b/spec/models/wife_spec.rb
+new file mode 100644
+index 0000000..20300d4
+--- /dev/null
++++ b/spec/models/wife_spec.rb
+@@ -0,0 +1,5 @@
++require 'rails_helper'
++
++RSpec.describe Wife, :type => :model do
++  pending "add some examples to (or delete) #{__FILE__}"
++end
+diff --git a/spec/rails_helper.rb b/spec/rails_helper.rb
+new file mode 100644
+index 0000000..e6c0b68
+--- /dev/null
++++ b/spec/rails_helper.rb
+@@ -0,0 +1,50 @@
++# This file is copied to spec/ when you run 'rails generate rspec:install'
++ENV["RAILS_ENV"] ||= 'test'
++require 'spec_helper'
++require File.expand_path("../../config/environment", __FILE__)
++require 'rspec/rails'
++# Add additional requires below this line. Rails is not loaded until this point!
++
++# Requires supporting ruby files with custom matchers and macros, etc, in
++# spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
++# run as spec files by default. This means that files in spec/support that end
++# in _spec.rb will both be required and run as specs, causing the specs to be
++# run twice. It is recommended that you do not name files matching this glob to
++# end with _spec.rb. You can configure this pattern with the --pattern
++# option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
++#
++# The following line is provided for convenience purposes. It has the downside
++# of increasing the boot-up time by auto-requiring all files in the support
++# directory. Alternatively, in the individual `*_spec.rb` files, manually
++# require only the support files necessary.
++#
++# Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
++
++# Checks for pending migrations before tests are run.
++# If you are not using ActiveRecord, you can remove this line.
++ActiveRecord::Migration.maintain_test_schema!
++
++RSpec.configure do |config|
++  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
++  config.fixture_path = "#{::Rails.root}/spec/fixtures"
++
++  # If you're not using ActiveRecord, or you'd prefer not to run each of your
++  # examples within a transaction, remove the following line or assign false
++  # instead of true.
++  config.use_transactional_fixtures = true
++
++  # RSpec Rails can automatically mix in different behaviours to your tests
++  # based on their file location, for example enabling you to call `get` and
++  # `post` in specs under `spec/controllers`.
++  #
++  # You can disable this behaviour by removing the line below, and instead
++  # explicitly tag your specs with their type, e.g.:
++  #
++  #     RSpec.describe UsersController, :type => :controller do
++  #       # ...
++  #     end
++  #
++  # The different available types are documented in the features, such as in
++  # https://relishapp.com/rspec/rspec-rails/docs
++  config.infer_spec_type_from_file_location!
++end
+diff --git a/spec/spec_helper.rb b/spec/spec_helper.rb
+new file mode 100644
+index 0000000..275ba49
+--- /dev/null
++++ b/spec/spec_helper.rb
+@@ -0,0 +1,85 @@
++# This file was generated by the `rails generate rspec:install` command. Conventionally, all
++# specs live under a `spec` directory, which RSpec adds to the `$LOAD_PATH`.
++# The generated `.rspec` file contains `--require spec_helper` which will cause this
++# file to always be loaded, without a need to explicitly require it in any files.
++#
++# Given that it is always loaded, you are encouraged to keep this file as
++# light-weight as possible. Requiring heavyweight dependencies from this file
++# will add to the boot time of your test suite on EVERY test run, even for an
++# individual file that may not need all of that loaded. Instead, consider making
++# a separate helper file that requires the additional dependencies and performs
++# the additional setup, and require it from the spec files that actually need it.
++#
++# The `.rspec` file also contains a few flags that are not defaults but that
++# users commonly want.
++#
++# See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
++RSpec.configure do |config|
++  # rspec-expectations config goes here. You can use an alternate
++  # assertion/expectation library such as wrong or the stdlib/minitest
++  # assertions if you prefer.
++  config.expect_with :rspec do |expectations|
++    # This option will default to `true` in RSpec 4. It makes the `description`
++    # and `failure_message` of custom matchers include text for helper methods
++    # defined using `chain`, e.g.:
++    # be_bigger_than(2).and_smaller_than(4).description
++    #   # => "be bigger than 2 and smaller than 4"
++    # ...rather than:
++    #   # => "be bigger than 2"
++    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
++  end
++
++  # rspec-mocks config goes here. You can use an alternate test double
++  # library (such as bogus or mocha) by changing the `mock_with` option here.
++  config.mock_with :rspec do |mocks|
++    # Prevents you from mocking or stubbing a method that does not exist on
++    # a real object. This is generally recommended, and will default to
++    # `true` in RSpec 4.
++    mocks.verify_partial_doubles = true
++  end
++
++# The settings below are suggested to provide a good initial experience
++# with RSpec, but feel free to customize to your heart's content.
++=begin
++  # These two settings work together to allow you to limit a spec run
++  # to individual examples or groups you care about by tagging them with
++  # `:focus` metadata. When nothing is tagged with `:focus`, all examples
++  # get run.
++  config.filter_run :focus
++  config.run_all_when_everything_filtered = true
++
++  # Limits the available syntax to the non-monkey patched syntax that is recommended.
++  # For more details, see:
++  #   - http://myronmars.to/n/dev-blog/2012/06/rspecs-new-expectation-syntax
++  #   - http://teaisaweso.me/blog/2013/05/27/rspecs-new-message-expectation-syntax/
++  #   - http://myronmars.to/n/dev-blog/2014/05/notable-changes-in-rspec-3#new__config_option_to_disable_rspeccore_monkey_patching
++  config.disable_monkey_patching!
++
++  # Many RSpec users commonly either run the entire suite or an individual
++  # file, and it's useful to allow more verbose output when running an
++  # individual spec file.
++  if config.files_to_run.one?
++    # Use the documentation formatter for detailed output,
++    # unless a formatter has already been configured
++    # (e.g. via a command-line flag).
++    config.default_formatter = 'doc'
++  end
++
++  # Print the 10 slowest examples and example groups at the
++  # end of the spec run, to help surface which specs are running
++  # particularly slow.
++  config.profile_examples = 10
++
++  # Run specs in random order to surface order dependencies. If you find an
++  # order dependency and want to debug it, you can fix the order by providing
++  # the seed, which is printed after each run.
++  #     --seed 1234
++  config.order = :random
++
++  # Seed global randomization in this process using the `--seed` CLI option.
++  # Setting this allows you to use `--seed` to deterministically reproduce
++  # test failures related to randomization by passing the same `--seed` value
++  # as the one that triggered the failure.
++  Kernel.srand config.seed
++=end
++end
+diff --git a/test/fixtures/.keep b/test/fixtures/.keep
+deleted file mode 100644
+index e69de29..0000000
+diff --git a/test/fixtures/options.yml b/test/fixtures/options.yml
+deleted file mode 100644
+index 937a0c0..0000000
+--- a/test/fixtures/options.yml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+-
+-# This model initially had no columns defined.  If you add columns to the
+-# model remove the '{}' from the fixture names and add the columns immediately
+-# below each fixture, per the syntax in the comments below
+-#
+-one: {}
+-# column: value
+-#
+-two: {}
+-#  column: value
+diff --git a/test/fixtures/questions.yml b/test/fixtures/questions.yml
+deleted file mode 100644
+index 937a0c0..0000000
+--- a/test/fixtures/questions.yml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+-
+-# This model initially had no columns defined.  If you add columns to the
+-# model remove the '{}' from the fixture names and add the columns immediately
+-# below each fixture, per the syntax in the comments below
+-#
+-one: {}
+-# column: value
+-#
+-two: {}
+-#  column: value
+diff --git a/test/fixtures/responses.yml b/test/fixtures/responses.yml
+deleted file mode 100644
+index 937a0c0..0000000
+--- a/test/fixtures/responses.yml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+-
+-# This model initially had no columns defined.  If you add columns to the
+-# model remove the '{}' from the fixture names and add the columns immediately
+-# below each fixture, per the syntax in the comments below
+-#
+-one: {}
+-# column: value
+-#
+-two: {}
+-#  column: value
+diff --git a/test/fixtures/roles.yml b/test/fixtures/roles.yml
+deleted file mode 100644
+index 937a0c0..0000000
+--- a/test/fixtures/roles.yml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+-
+-# This model initially had no columns defined.  If you add columns to the
+-# model remove the '{}' from the fixture names and add the columns immediately
+-# below each fixture, per the syntax in the comments below
+-#
+-one: {}
+-# column: value
+-#
+-two: {}
+-#  column: value
+diff --git a/test/fixtures/surveys.yml b/test/fixtures/surveys.yml
+deleted file mode 100644
+index 937a0c0..0000000
+--- a/test/fixtures/surveys.yml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+-
+-# This model initially had no columns defined.  If you add columns to the
+-# model remove the '{}' from the fixture names and add the columns immediately
+-# below each fixture, per the syntax in the comments below
+-#
+-one: {}
+-# column: value
+-#
+-two: {}
+-#  column: value
+diff --git a/test/fixtures/users.yml b/test/fixtures/users.yml
+deleted file mode 100644
+index 937a0c0..0000000
+--- a/test/fixtures/users.yml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+-
+-# This model initially had no columns defined.  If you add columns to the
+-# model remove the '{}' from the fixture names and add the columns immediately
+-# below each fixture, per the syntax in the comments below
+-#
+-one: {}
+-# column: value
+-#
+-two: {}
+-#  column: value

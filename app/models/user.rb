@@ -5,25 +5,26 @@ class User < ActiveRecord::Base
   has_many :responses
   has_many :options, through: :responses
 
-  validates_length_of :name, :in => 6..15
-  validates_format_of :name, :with => /\w+/ , :message => "only contain characters"
+  validates_length_of :name, :in => 3..25
+  validates_format_of :name, :with => /[a-zA-Z]+/ , :message => "only contain characters"
 
   #validates_presence_of :gender  # not null
-  validates_inclusion_of :gender, in: %w(M F), :allow_nil => true, message: "%{value} is not valid gender"
-
+  validates_inclusion_of :gender, in: %w(Male Female), :allow_nil => true, message: "%{value} is not valid gender"
+  GENDER = ['Male', 'Female']
   #validates_presence_of :age
   #validates :age, length: { minimum: 2}
   #validates :age, numericality: {only_integer: true}
-  validates_numericality_of :age, :allow_nil => true, :greater_than => 15, :less_than_or_equal_to => 90, :only_integer => true
+  validates_numericality_of :age, :allow_nil => true, :greater_than => 15, :less_than_or_equal_to => 70, :only_integer => true
 
 
-  #validates :email, length: {minimum: 5, maximum: 30}
-  validates_length_of :email, :in => 8..25
-  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/, :message => " invalid email"
+  validates :email, length: {minimum: 5}, uniqueness: true
+  #validates_length_of :email, :in => 5..25
+  validates_format_of :email, :with => /\A([^@\s#*-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/, :message => " invalid email"
 
   #validates :password, length: {minimum: 8, maximum: 15}
-  validates_length_of :password, :in => 8..20
+  validates_length_of :password, :in => 8..25
   #validates :role_id, presence: true
+  has_secure_password
 
   before_save :change_name
   def change_name

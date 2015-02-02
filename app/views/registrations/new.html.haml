@@ -1,0 +1,27 @@
+%h1
+  User Registration
+= flash[:error]
+= form_for @user, url: "create" do |user|
+  - if @user.errors.any?
+    - @user.errors.full_messages.each do |msg|
+      = p msg
+      %br
+  = user.label :name
+  = user.text_field :name
+  %br
+  = user.label :email
+  = user.text_field :email
+  %br
+  = user.label :password
+  = user.text_field :password
+  %br
+  = user.label :confirm_password
+  = user.text_field :password_confirmation
+  %br
+  .actions
+    = user.submit
+
+%br
+%p
+  already have account? plsase login here
+= link_to "Login", login_path

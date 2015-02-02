@@ -1,0 +1,14 @@
+= flash[:notice]
+%table
+  %tr
+    %th Users
+    - @user.each do |u|
+      %tr
+        %td= u.name
+        %td= link_to "Details", user_path(u)
+        %td= link_to "Edit", edit_user_path(u)
+        %td= link_to "Delete", user_path(u), method: 'delete', data: {confirm: 'Are you sure??'}
+%br
+%br
+= link_to "SignUp here", new_user_path
+= link_to 'Survey App', surveys_path

@@ -1,19 +1,24 @@
 %h1
   Survey details
 
-%h3
-  survey name--
-  = @survey.name
-  %h3
-    Survey type--
-    = @survey.survey_type
-  %h3
-    conducted on date--
-    = @survey.conducted_on
-  %h3
-    count no of people--
-    = @survey.count_people
-
+%table{:border => '1'}
+  %th
+    survey name
+    %tr
+      %td= @survey.name
+  %th
+    Survey type
+    %tr
+      %td= @survey.survey_type
+  %th
+    conducted on date
+    %tr
+      %td= @survey.conducted_on
+  %th
+    count no of people
+    %tr
+      %td= @survey.count_people
+%br
 =link_to "Home", root_path
 =link_to "Edit", edit_survey_path
 =link_to "Questions", survey_questions_path(@survey.id)

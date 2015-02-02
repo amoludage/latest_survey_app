@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150128105018) do
+ActiveRecord::Schema.define(version: 20150202081041) do
 
   create_table "husbands", force: :cascade do |t|
     t.string   "name"
@@ -70,8 +70,9 @@ ActiveRecord::Schema.define(version: 20150128105018) do
     t.string   "gender"
     t.string   "password"
     t.integer  "role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "password_digest"
   end
 
   add_index "users", ["role_id"], name: "index_users_on_role_id"

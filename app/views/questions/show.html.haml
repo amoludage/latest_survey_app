@@ -1,5 +1,14 @@
-%h2
-  Show questions
-
+%h4
+  Question:
+  %br
+= @question.description
+%br
+%h4
+  Options:
+%table{:border => "1"}
+  %tr
+    - @option.each do |op|
+      %td= op.description
+%br
 = link_to 'Question Index', survey_questions_path(@survey)
 = link_to 'Survey Home', root_path

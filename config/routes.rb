@@ -1,15 +1,23 @@
 Rails.application.routes.draw do
+
+  get '/login' => 'sessions#new'
+  get '/register/new' => 'registrations#new'
+  post '/register/create' => 'registrations#create'
+  get '/logout' => 'sessions#destroy'
+  post '/session/create' => 'sessions#create'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-
   # You can have the root of your site routed with "root"
-  root 'surveys#index'
+  #root 'surveys#index'
+  root 'sessions#new'
   resources :surveys do#do  #rails restful routing
     resources :questions
   end
   resources :questions do
     resources :options
   end
+
+  resources :users
 =begin
     resources :questions
     member do #specific route

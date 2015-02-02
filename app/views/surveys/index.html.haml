@@ -2,7 +2,7 @@
   Welcome to survey application
 %p
   =flash[:notice]
-%table
+%table{:border => '1'}
   %tr
     %th Survey names
     - @survey.each do |s|
@@ -14,4 +14,5 @@
   %br
 
 %br
-=link_to "Create new Survey", new_survey_path
+= link_to "Create new Survey", new_survey_path
+= link_to "Logout", logout_path

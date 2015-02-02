@@ -1,0 +1,27 @@
+%h1
+  User information
+%table{:border => '1'}
+  %th
+    Name:
+    %tr
+      %td= @user.name
+  %th
+    password:
+    %tr
+      %td= @user.password
+  %th
+    Email:
+    %tr
+      %td= @user.email
+  %th
+    Gender:
+    %tr
+      %td= @user.gender
+  %th
+    Age:
+    %tr
+      %td= @user.age
+
+= link_to 'User Home', users_path
+= link_to 'Edit user', edit_user_path(@user)
+
