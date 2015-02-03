@@ -21,8 +21,8 @@ class User < ActiveRecord::Base
   #validates_length_of :email, :in => 5..25
   validates_format_of :email, :with => /\A([^@\s#*-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/, :message => " invalid email"
 
-  #validates :password, length: {minimum: 8, maximum: 15}
-  validates_length_of :password, :in => 8..25
+  validates :password, length: {minimum: 7}
+  #validates_length_of :password, :in => 8..25
   #validates :role_id, presence: true
   has_secure_password
 

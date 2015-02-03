@@ -1,4 +1,6 @@
 class SurveysController < ApplicationController
+  before_filter :is_user_login?
+
   def index
     @survey = Survey.all
   end
@@ -7,9 +9,9 @@ class SurveysController < ApplicationController
     @survey = Survey.new(survey_params)
     if @survey.save
       flash[:notice] = "survey successfully saved"
-      redirect_to root_path
+      redirect_to surveys_path
     else
-      flash[:error] = 'something went wrong in form: please fill all detail'
+      flash[:error] = 'please fill all detail'
       render 'new'
     end
   end
@@ -34,9 +36,9 @@ class SurveysController < ApplicationController
     @survey = Survey.find(params[:id])
     if @survey.update_attributes(survey_params)
       flash[:notice] = 'survey updated successfully'
-      redirect_to root_path
+      redirect_to surveys_path
     else
-      flash[:error] = 'Something wrong: please insert all detail properly'
+      flash[:error] = 'please insert all detail properly'
       render 'edit'
     end
   end
@@ -51,5 +53,12 @@ class SurveysController < ApplicationController
   private
   def survey_params
     params.require(:survey).permit(:name, :survey_type, :conducted_on, :count_people)# questions_attributes: [:description])
+  end
+
+  def is_user_login?
+    if !session[:user_id]
+      flash[:error] = 'Please Login first for survey app'
+      redirect_to root_path
+    end
   end
 end

@@ -1,7 +1,9 @@
 %h2
   Edit the form
-=flash[:error]
+%h4
+  = flash[:error]
 = render 'form'
-
-=link_to "Home", root_path
-=#link_to 'Edit Question', edit_survey_question_path(@survey)
+%p
+  =link_to "Survey Home", surveys_path
+%p{:class => 'position'}
+  = link_to " Logout |", logout_path#link_to 'Edit Question', edit_survey_question_path(@survey)

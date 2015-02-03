@@ -1,3 +1,9 @@
-= flash[:error]
+%h4
+  = flash[:error]
+%h2
+  Create new Survey
 = render "form"
-= link_to 'Home', root_path
+%p
+  = link_to 'Survey Home', surveys_path
+%p{:class => 'position'}
+  = link_to " Logout |", logout_path

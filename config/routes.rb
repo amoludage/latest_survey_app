@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
 
-  get '/login' => 'sessions#new'
   get '/register/new' => 'registrations#new'
   post '/register/create' => 'registrations#create'
+  get '/register/create' => 'registrations#new'
+
+  get '/login' => 'sessions#new'
   get '/logout' => 'sessions#destroy'
   post '/session/create' => 'sessions#create'
-  # The priority is based upon order of creation: first created -> highest priority.
+  get '/session/create' => 'sessions#create'
+  #te The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   # You can have the root of your site routed with "root"
   #root 'surveys#index'

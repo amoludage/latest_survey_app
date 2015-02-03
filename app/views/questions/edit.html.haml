@@ -1,4 +1,8 @@
-%h2
+%h1
   Edit the questions
 = render 'form'
-= link_to 'Question Home', survey_questions_path(@survey)
+%p
+  = link_to 'Question Home |', survey_questions_path(@survey)
+  = link_to 'Survey Home', surveys_path
+%p{:class => 'position'}
+  = link_to " Logout |", logout_path

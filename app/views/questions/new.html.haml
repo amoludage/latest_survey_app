@@ -1,5 +1,11 @@
-%h2
+%h4
+  =flash[:error]
+%h1
   New question..
 
 = render 'form'
-= link_to 'Home', survey_questions_path(@survey)
+%p
+  = link_to 'Questions Home', survey_questions_path(@survey)
+  = link_to 'Surveys Home', surveys_path
+%p{:class => 'position'}
+  = link_to " Logout |", logout_path

@@ -10,7 +10,7 @@ class RegistrationsController < ApplicationController
       redirect_to login_path
     else
       flash[:error] = 'Registration failed'
-      render 'new'
+      render 'new', method: 'get'
     end
   end
 

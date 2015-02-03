@@ -1,10 +1,10 @@
-%p
+%h1
   Survey details
 = form_for(@survey) do |survey|
-  -@survey.errors.any?
-    -@survey.errors.full_messages.each do |msg|
-      = p msg
-      %br
+  - if @survey.errors.any?
+    - @survey.errors.full_messages.each do |msg|
+      %h4
+        = p msg
   = survey.label :name
   = survey.text_field :name
   %br
@@ -17,8 +17,6 @@
   = survey.label :count_people
   = survey.text_field :count_people
   %br
-  .actions
-    = survey.submit
-%br
-
-= image_submit_tag("log.jpg")
+  %p
+    .actions
+      = survey.submit

@@ -1,11 +1,15 @@
+%h4
+  = flash[:error]
+%h2
+  New User
 %h1
   User Registration
-= flash[:error]
 = form_for @user, url: "create" do |user|
   - if @user.errors.any?
     - @user.errors.full_messages.each do |msg|
-      = p msg
-      %br
+      %p{:class => 'error'}
+        = p msg
+
   = user.label :name
   = user.text_field :name
   %br
@@ -22,6 +26,5 @@
     = user.submit
 
 %br
-%p
   already have account? plsase login here
 = link_to "Login", login_path

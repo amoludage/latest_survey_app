@@ -1,8 +1,8 @@
-%h2
+%h1
   Welcome to survey application
 %p
   =flash[:notice]
-%table{:border => '1'}
+%table{ :class => 'table'}
   %tr
     %th Survey names
     - @survey.each do |s|
@@ -14,5 +14,7 @@
   %br
 
 %br
-= link_to "Create new Survey", new_survey_path
-= link_to "Logout", logout_path
+%p
+  = link_to "| Create new Survey | ", new_survey_path
+%p{:class => 'position'}
+  = link_to " Logout |", logout_path

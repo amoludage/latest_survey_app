@@ -1,7 +1,10 @@
-= flash[:notice]
-= flash[:error]
-%h1
+%h4
+  = flash[:notice]
+  = flash[:error]
+%h2
   Login
+%h1
+  Login page
 
 = form_tag session_create_path do
   = label_tag :user_name
@@ -13,6 +16,6 @@
   = submit_tag 'Login'
   %br
 
-%p
-  New user? please register first
+New user? please register first
+%br
 = link_to "Register", register_new_path

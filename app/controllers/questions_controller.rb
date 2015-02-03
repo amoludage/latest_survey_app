@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_filter :is_user_login?
   def index
     @survey = Survey.find(params[:survey_id])
     @question = @survey.questions
@@ -22,10 +23,10 @@ class QuestionsController < ApplicationController
     @survey  = Survey.find(params[:survey_id])
     @question = @survey.questions.new(question_params)
     if @question.save
-      flash[:notice] = 'question created successfully'
+      flash[:notice] = 'Question is created successfully'
       redirect_to survey_questions_path(@survey)
     else
-      flash[:error] = 'something went wrong'
+      flash[:error] = 'Please fill question with some options'
       render 'new'
     end
   end
@@ -57,5 +58,12 @@ class QuestionsController < ApplicationController
   private
   def question_params
     params.require(:question).permit(:description, options_attributes: [:id, :description])
+  end
+
+  def is_user_login?
+    if !session[:user_id]
+      flash[:error] = 'Hey you are not logged in, Please login first'
+      redirect_to root_path
+    end
   end
 end

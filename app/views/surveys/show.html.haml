@@ -1,7 +1,7 @@
 %h1
   Survey details
 
-%table{:border => '1'}
+%table{:class => 'table'}
   %th
     survey name
     %tr
@@ -19,6 +19,9 @@
     %tr
       %td= @survey.count_people
 %br
-=link_to "Home", root_path
-=link_to "Edit", edit_survey_path
-=link_to "Questions", survey_questions_path(@survey.id)
+%p
+  =link_to "Survey Home |", surveys_path
+  =link_to "Edit Survey |", edit_survey_path
+  =link_to "Questions List", survey_questions_path(@survey.id)
+%p{:class => 'position'}
+  = link_to " Logout |", logout_path
