@@ -4,4 +4,4 @@ rvm:
 travis-lint
 addons:
     code_climate:
-          repo_token: adf08323...
+          repo_token: 'a944a4189882e47e3ba008e4e96b72e78d0914517067170debc7f21e6f3d8066'
