@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
   validates :name, length: {minimum: 3}
   #validates_length_of :name, :in => 3..25
-  validates_format_of :name, :with => /\A[a-zA-Z\s\z]+/ , :message => "only contain characters"
+  validates_format_of :name, :with => /\A[a-zA-Z\s]+\z/ , :message => "only contain characters"
 
   #validates_presence_of :gender  # not null
   validates_inclusion_of :gender, in: %w(Male Female), :allow_nil => true, message: "%{value} is not valid gender"
