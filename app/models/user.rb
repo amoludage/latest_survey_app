@@ -5,8 +5,9 @@ class User < ActiveRecord::Base
   has_many :responses
   has_many :options, through: :responses
 
-  validates_length_of :name, :in => 3..25
-  validates_format_of :name, :with => /[a-zA-Z]+/ , :message => "only contain characters"
+  validates :name, length: {minimum: 3}
+  #validates_length_of :name, :in => 3..25
+  validates_format_of :name, :with => /[a-zA-Z\s]+/ , :message => "only contain characters"
 
   #validates_presence_of :gender  # not null
   validates_inclusion_of :gender, in: %w(Male Female), :allow_nil => true, message: "%{value} is not valid gender"
@@ -17,7 +18,7 @@ class User < ActiveRecord::Base
   validates_numericality_of :age, :allow_nil => true, :greater_than => 15, :less_than_or_equal_to => 70, :only_integer => true
 
 
-  validates :email, length: {minimum: 5}, uniqueness: true
+  validates :email, length: {minimum: 8}, uniqueness: true
   #validates_length_of :email, :in => 5..25
   validates_format_of :email, :with => /\A([^@\s#*-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/, :message => " invalid email"
 

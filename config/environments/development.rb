@@ -38,4 +38,5 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  CODECLIMATE_REPO_TOKEN = 'a944a4189882e47e3ba008e4e96b72e78d0914517067170debc7f21e6f3d8066'
 end

@@ -2,7 +2,8 @@ FactoryGirl.define do
   factory :user do
     name 'amol udage'
     sequence(:email) {|n| "amol#{n}@gmail.com"}
-    password '1234567890'
+    password 'amoludage1'
+    password_confirmation 'amoludage1'
     age 22
 #gender 'M'
     association :role
@@ -12,7 +13,7 @@ FactoryGirl.define do
        end
 =end
     trait :gender do
-      gender "M"
+      gender "Male"
     end
   end
 end
