@@ -1,1 +1,7 @@
 language: ruby
+rvm:
+  - '1.26.8'
+travis-lint
+addons:
+    code_climate:
+          repo_token: adf08323...
